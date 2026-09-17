@@ -54,9 +54,7 @@ export const useModbusStore = defineStore('modbus', () => {
       if (!dev.online) continue
       for (const reg of dev.registers) {
         if (typeof reg.value === 'number') {
-          const noise = (Math.random() - 0.5) * reg.value * 0.02
-          reg.value = Math.round((reg.value + noise) * 100) / 100
-          reg.updatedAt = Date.now()
+          // 数值以受控通道/后端同步为准，这里仅维护趋势曲线，不再叠加噪声
           const key = `${dev.id}_${reg.address}`
           if (!historyData.value[key]) historyData.value[key] = { time: [], values: [] }
           historyData.value[key].time.push(Date.now())
