@@ -16,3 +16,12 @@ class Device(BaseModel):
     slave_id: int
     online: bool
     registers: List[ModbusRegister] = []
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class WriteRequest(BaseModel):
+    device_id: str
+    address: int
+    value: float

@@ -90,9 +90,17 @@ export const useModbusStore = defineStore('modbus', () => {
     if (d) d.online = !d.online
   }
 
+  function applyLocalWrite(deviceId: string, address: number, value: number) {
+    const dev = devices.value.find(d => d.id === deviceId)
+    const reg = dev?.registers.find(r => r.address === address)
+    if (!reg) return
+    reg.value = typeof reg.value === 'boolean' ? value !== 0 : value
+    reg.updatedAt = Date.now()
+  }
+
   return {
     devices, alarms, historyData, isPolling, pollInterval, selectedDevice,
     criticalAlarms, onlineDevices,
-    initMockDevices, simulatePoll, acknowledgeAlarm, toggleDevice
+    initMockDevices, simulatePoll, acknowledgeAlarm, toggleDevice, applyLocalWrite
   }
 })
